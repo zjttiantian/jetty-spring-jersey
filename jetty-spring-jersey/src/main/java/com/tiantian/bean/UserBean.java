@@ -1,16 +1,9 @@
 package com.tiantian.bean;
 
 public class UserBean extends BaseBean {
-	private Integer id;
 	private String name;
 	private Integer age;
 	private String password;
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}

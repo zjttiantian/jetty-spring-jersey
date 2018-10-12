@@ -10,11 +10,12 @@
 		<result column="name" property="name" />
 		<result column="age" property="age" />
 		<result column="password" property="password" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
 	</resultMap>
-
 	<!-- user table all fields -->
 	<sql id="Base_Column_List">
-		id,name,age,password
+		id,name,age,password,createTime,updateTime
 	</sql>
 
 
@@ -35,14 +36,14 @@
 			keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into user(name,password)
-		values(#{name},#{password})
+		insert into user(name,password,createTime,updateTime)
+		values(#{name},#{password},now(),now())
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Object">
 		update user set
-		token=#{token},system_name=#{systemName},status=#{status} where
+		name=#{name},age=#{age},password=${password},updateTime=new() where
 		id=#{id}
 	</update>
 
@@ -74,29 +75,6 @@
 		select
 		<include refid="Base_Column_List" />
 		from user where id = #{id}
-	</select>
-
-	<!-- 系统认证token 列表总数 -->
-	<select id="queryByCount" resultType="java.lang.Integer"
-		parameterType="Object">
-		select count(1) from user
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 查询系统认证token列表 -->
-	<select id="queryByList" resultMap="BaseResultMap"
-		parameterType="Object" useCache="true">
-		select
-		<include refid="Base_Column_List" />
-		from user
-		<include refid="Example_Where_Clause" />
-		<if test="pager.orderCondition != null and pager.orderCondition != ''">
-			${pager.orderCondition}
-		</if>
-		<if
-			test="pager.mysqlQueryCondition != null and pager.mysqlQueryCondition != ''">
-			${pager.mysqlQueryCondition}
-		</if>
 	</select>
 
 </mapper>   
